@@ -2,6 +2,7 @@ package entidade;
 
 import jogo.*;
 import jogo.Panel;
+import jogo.CollisionCheck;
 
 
 import javax.imageio.ImageIO;
@@ -12,19 +13,40 @@ public class Player extends Entity{
     Panel g;
     Input keyH;
     int number;
+    CollisionCheck A =new CollisionCheck();
 
     public Player(Panel g, Input a, int number){
         this.g = g;
         this.number = number;
         this.keyH = a;
-        setDefaultValues();
+        setValues(100,100,8);
+        getPlayerImage();
+        solidArea = new Rectangle(0, 0, 60, 60);
+
+    }
+    public Player(Panel g, Input a, int number,int x,int y){
+        this.g = g;
+        this.number = number;
+        this.keyH = a;
+        setValues(x,y,8);
         getPlayerImage();
         solidArea = new Rectangle(0, 0, 60, 60);
     }
-    public void setDefaultValues(){
-        x = 100;
-        y = 100;
-        speed = 8;
+
+    public Player(Panel g, Input a, int number,int x,int y,int speed){
+        this.g = g;
+        this.number = number;
+        this.keyH = a;
+        setValues(x,y,speed);
+        getPlayerImage();
+        solidArea = new Rectangle(0, 0, 60, 60);
+    }
+
+
+    public void setValues(int x,int y,int speed){
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
     }
 
     public void getPlayerImage(){
@@ -67,19 +89,19 @@ public class Player extends Entity{
             moving = true;
             if (keyH.wPressed == true) {
                 y -= speed;
-                direction = "up";
+                speedY = -speed;
             }
             if (keyH.sPressed == true) {
                 y += speed;
-                direction = "down";
+                speedY = speed;
             }
             if (keyH.dPressed == true) {
                 x += speed;
-                direction = "right";
+                speedX = speed;
             }
             if (keyH.aPressed == true) {
                 x -= speed;
-                direction = "left";
+                speedX = -speed;
             }
         }
         //-------------------------------------------------------------------------------------
@@ -88,26 +110,26 @@ public class Player extends Entity{
             moving = true;
             if (keyH.upPressed == true) {
                 y -= speed;
-                direction = "up";
+                speedY = -speed;
             }
             if (keyH.downPressed == true) {
                 y += speed;
-                direction = "down";
+                speedY = speed;
             }
             if (keyH.rightPressed == true) {
                 x += speed;
-                direction = "right";
+                speedX = speed;
             }
             if (keyH.leftPressed == true) {
                 x -= speed;
-                direction = "left";
+                speedX = -speed;
             }
         }
 
         spriteNum = 0;
         if(moving) {
             collisionOn = false;
-            g.cCheck.checkTile(this);
+            //g.cCheck.checkTile(this);
 
             spriteCouter++;
             if (spriteCouter > 1) {
@@ -118,6 +140,19 @@ public class Player extends Entity{
                 spriteNum = 0;
             }
         }
+        String Colission;
+        Colission=A.collisionMapX(this.x);
+        if(Colission!="No Colission"){
+            if(Colission=="right")x=A.collisionMapCorrection(Colission);
+            if(Colission=="left")x=A.collisionMapCorrection(Colission);
+        }
+
+        Colission=A.collisionMapY(this.y);
+        if(Colission!="No Colission"){
+            if(Colission=="top")y=A.collisionMapCorrection(Colission);
+            if(Colission=="botton")y=A.collisionMapCorrection(Colission);
+        }
+
         return true;
     }
     public void draw(Graphics2D g2){

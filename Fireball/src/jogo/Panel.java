@@ -1,6 +1,8 @@
 package jogo;
 import Tile.TileManager;
 import entidade.Player;
+import jogo.CollisionCheck;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,11 +18,8 @@ public class Panel extends JPanel implements Runnable {
     TileManager tile = new TileManager(this);
     Input keyH = new Input();
     Player player1 = new Player(this, keyH, 1);
-
-    Player player2 = new Player(this, keyH, 2);
-
-    public CollisionCheck cCheck = new CollisionCheck(this);
-
+    Player player2 = new Player(this, keyH, 2,300,100);
+    CollisionCheck A =new CollisionCheck();
     Dimension screenSize = new Dimension(1920, 1080);
 
     public final int larguraTela = screenSize.width;
@@ -39,8 +38,8 @@ public class Panel extends JPanel implements Runnable {
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.setFocusable(true);
-        player2.setX(300);
         this.addKeyListener(keyH);
+        A.setMap(0,500,800,0);
     }
     public void startGameThread(){
         gameThread = new Thread(this);

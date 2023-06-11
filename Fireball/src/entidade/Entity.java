@@ -19,7 +19,7 @@ public class Entity {
 
     public int spriteCouter = 0;
 
-    public String direction;
+    public int speedX,speedY;
 
     boolean moving;
 }

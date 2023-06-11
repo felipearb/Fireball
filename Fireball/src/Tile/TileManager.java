@@ -24,7 +24,6 @@ public class TileManager {
 
     public void loadMap(String map){
         try{
-
             InputStream is = getClass().getResourceAsStream(map);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
